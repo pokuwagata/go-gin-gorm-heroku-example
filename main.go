@@ -17,7 +17,6 @@ type Ping struct {
 const tableName = "ping_timestamp"
 
 func registerPing(db *gorm.DB) {
-	// _, err := db.Exec("INSERT INTO ping_timestamp (occurred) VALUES ($1)", time.Now())
 	db.Table(tableName).Create(&Ping{Occurred: time.Now()})
 }
 
@@ -26,14 +25,11 @@ func pingFunc(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		defer registerPing(db)
-		// r := db.QueryRow("SELECT occurred FROM ping_timestamp ORDER BY id DESC LIMIT 1")
 		var ping Ping
 		var pings []Ping
 		db.Table(tableName).Find(&pings)
 		db.Table(tableName).Last(&ping)
-		// var ping Ping
 		c.JSON(200, gin.H{
-			// "message": ping.Occurred,
 			"all":  pings,
 			"last": ping,
 		})
