@@ -1,6 +1,6 @@
 FROM golang:latest as builder
 RUN mkdir /app 
-WORKDIR /app 
+WORKDIR /app/server 
 COPY go.mod .
 COPY go.sum .
 RUN go mod download
